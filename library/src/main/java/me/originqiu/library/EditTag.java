@@ -109,20 +109,34 @@ public class EditTag extends FrameLayout
         addInputTagView();
     }
 
+    /**
+     * 这个tag，创建到谁身上去了，你需要看清楚了
+     * 这个思路就是你创建的tagVIew的更改了
+     */
     private void addInputTagView() {
         editText = createInputTag(flowLayout);
         editText.setTag(new Object());
         editText.setOnClickListener(this);
         setupListener();
+        /**
+         * FIXME: 2022/6/10  尤其是这个地方了
+         * 修改 flowLayout 的算法就额可以了，是一个思路
+         */
         flowLayout.addView(editText);
         isEditableStatus = true;
     }
 
     private void setupListener() {
+        //这个是为了监听创建tag的操作
         editText.setOnEditorActionListener(this);
+        //这个是为了监听删除的操作的
         editText.setOnKeyListener(this);
     }
 
+
+    /**
+     * 删除操作
+     */
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         boolean isHandle = false;
@@ -130,6 +144,7 @@ public class EditTag extends FrameLayout
             String tagContent = editText.getText().toString();
             if (TextUtils.isEmpty(tagContent)) {
                 int tagCount = flowLayout.getChildCount();
+                // FIXME: 2022/6/10  这个逻辑改改就好，不需要使用最后一个操作
                 if (lastSelectTagView == null && tagCount > 1) {
                     if (isDelAction) {
                         flowLayout.removeViewAt(tagCount - 2);
@@ -148,6 +163,7 @@ public class EditTag extends FrameLayout
                     removeSelectedTag();
                 }
             } else {
+                //这个是正常执行EditText的删除操作
                 int length = tagContent.length();
                 editText.getText().delete(length, length);
             }
@@ -155,6 +171,13 @@ public class EditTag extends FrameLayout
         return isHandle;
     }
 
+
+    /**
+     * 添加操作
+     * EditorInfo.IME_ACTION_DONE 完成，换行的按钮
+     * todo: 2022年6月10日17:36:10
+     * 这个地方没看到位置怎么移动了，主要就是位置移动的操作
+     */
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         boolean isHandle = false;
@@ -163,8 +186,7 @@ public class EditTag extends FrameLayout
             if (TextUtils.isEmpty(tagContent)) {
                 // do nothing, or you can tip "can'nt add empty tag"
             } else {
-                if (tagAddCallBack == null || (tagAddCallBack != null
-                        && tagAddCallBack.onTagAdd(tagContent))) {
+                if (tagAddCallBack == null || tagAddCallBack.onTagAdd(tagContent)) {
                     TextView tagTextView = createTag(flowLayout, tagContent);
                     if (defaultTagBg == null) {
                         defaultTagBg = tagTextView.getBackground();
@@ -224,15 +246,13 @@ public class EditTag extends FrameLayout
     }
 
     private TextView createTag(ViewGroup parent, String s) {
-        TextView tagTv =
-                (TextView) LayoutInflater.from(getContext()).inflate(tagViewLayoutRes, parent, false);
+        TextView tagTv = (TextView) LayoutInflater.from(getContext()).inflate(tagViewLayoutRes, parent, false);
         tagTv.setText(s);
         return tagTv;
     }
 
     private EditText createInputTag(ViewGroup parent) {
-        editText =
-                (EditText) LayoutInflater.from(getContext()).inflate(inputTagLayoutRes, parent, false);
+        editText = (EditText) LayoutInflater.from(getContext()).inflate(inputTagLayoutRes, parent, false);
         return editText;
     }
 
