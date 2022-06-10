@@ -94,20 +94,16 @@ public class EditTag extends FrameLayout
     public EditTag(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.EditTag);
-        tagViewLayoutRes =
-                mTypedArray.getResourceId(R.styleable.EditTag_tag_layout, R.layout.view_default_tag);
-        inputTagLayoutRes = mTypedArray.getResourceId(R.styleable.EditTag_input_layout,
-                R.layout.view_default_input_tag);
-        deleteModeBgRes =
-                mTypedArray.getResourceId(R.styleable.EditTag_delete_mode_bg, R.color.colorAccent);
+        tagViewLayoutRes = mTypedArray.getResourceId(R.styleable.EditTag_tag_layout, R.layout.view_default_tag);
+        inputTagLayoutRes = mTypedArray.getResourceId(R.styleable.EditTag_input_layout, R.layout.view_default_input_tag);
+        deleteModeBgRes = mTypedArray.getResourceId(R.styleable.EditTag_delete_mode_bg, R.color.colorAccent);
         mTypedArray.recycle();
         setupView();
     }
 
     private void setupView() {
         flowLayout = new FlowLayout(getContext());
-        LayoutParams layoutParams =
-                new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         flowLayout.setLayoutParams(layoutParams);
         addView(flowLayout);
         addInputTagView();
