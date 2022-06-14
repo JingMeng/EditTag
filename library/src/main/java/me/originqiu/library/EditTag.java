@@ -20,8 +20,10 @@ package me.originqiu.library;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,6 +119,18 @@ public class EditTag extends FrameLayout
         editText = createInputTag(flowLayout);
         editText.setTag(new Object());
         editText.setOnClickListener(this);
+
+        //-------------------这些都是处理多行的显示，而不是只是在一行之中展示
+        //设置EditText的显示方式为多行文本输入
+        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        //文本显示的位置在EditText的最上方
+        editText.setGravity(Gravity.TOP);
+        //改变默认的单行模式
+        editText.setSingleLine(false);
+        //水平滚动设置为False
+        editText.setHorizontallyScrolling(false);
+
+
         setupListener();
         /**
          * FIXME: 2022/6/10  尤其是这个地方了
