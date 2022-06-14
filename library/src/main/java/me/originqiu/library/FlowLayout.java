@@ -29,6 +29,14 @@ public class FlowLayout extends ViewGroup {
         this(context, null);
     }
 
+    /**
+     * 修改 这个地方，查看最后一个是否是EditText，这个可以根据tag来计算
+     * 如果最后一个是Edit，那就让他占用剩余的这一行
+     * <p>
+     * todo 2022年6月14日09:16:44
+     * 但是这样存在一个问题
+     * 就是最后一个EditText输入的内容过多的话，会导致换行，换行之后会留着一部分空白出现
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
